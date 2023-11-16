@@ -7,10 +7,16 @@ function handleFiles(files) {
     reader.onload = function(e) {
         const content = e.target.result;
         const processedContent = processCsv(content);
-        createDownloadLink(processedContent);
+        const processedFileName = getProcessedFileName(file.name);
+        createDownloadLink(processedContent, processedFileName);
     };
 
     reader.readAsText(file, 'UTF-8');
+}
+
+function getProcessedFileName(originalFileName) {
+    // 拡張子を取り除き、'_processed' を追加
+    return originalFileName.replace(/\.[^/.]+$/, '') + '_processed.csv';
 }
 
 function processCsv(csvContent) {
@@ -30,11 +36,11 @@ function processCsv(csvContent) {
     return processedRows.join('\n');
 }
 
-function createDownloadLink(csvContent) {
+function createDownloadLink(csvContent, fileName) {
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const downloadLink = document.getElementById('downloadLink');
     downloadLink.style.display = 'block';
     downloadLink.href = url;
-    downloadLink.download = 'processed.csv';
+    downloadLink.download = fileName;
 }
