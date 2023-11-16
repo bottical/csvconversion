@@ -17,16 +17,18 @@ function processCsv(csvContent) {
     const rows = csvContent.split('\n');
     const headers = rows[0].split(',');
 
-    // 日本語のヘッダーを英語のヘッダーに置き換える
-    // 例: '名前,年齢,住所' を 'Name,Age,Address' に置き換える
-    const newHeaders = ['Name', 'Age', 'Address']; // 新しいヘッダー
+    // ヘッダーの置き換え
+    const newHeaders = ['1', 'oder', '2', 'ship', '3', '4', '5', '6', '7', '8', '9', '10']; // 新しいヘッダー
+    rows[0] = newHeaders.join(',');
 
-    // ヘッダー以外の行はそのまま使用する
-    const newData = rows.map((row, index) => {
-        return index === 0 ? newHeaders.join(',') : row;
+    // 2列目と4列目のみを保持
+    const processedRows = rows.map((row, index) => {
+        if (index === 0) return row; // ヘッダー行はそのまま
+        const columns = row.split(',');
+        return [columns[1], columns[3]].join(','); // 2列目と4列目のみ選択
     });
 
-    return newData.join('\n');
+    return processedRows.join('\n');
 }
 
 function createDownloadLink(csvContent) {
