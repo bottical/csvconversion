@@ -10,7 +10,7 @@ function handleFiles(files) {
         createDownloadLink(processedContent);
     };
 
-    reader.readAsText(file);
+    reader.readAsText(file, 'UTF-8');
 }
 
 function processCsv(csvContent) {
@@ -27,7 +27,7 @@ function processCsv(csvContent) {
 }
 
 function createDownloadLink(csvContent) {
-    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const downloadLink = document.getElementById('downloadLink');
     downloadLink.style.display = 'block';
