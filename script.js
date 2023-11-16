@@ -29,10 +29,10 @@ function processCsv(csvContent) {
 function createDownloadLink(csvContent) {
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
-    const downloadButton = document.getElementById('downloadButton');
-    downloadButton.style.display = 'block';
-    downloadButton.href = url;
-    downloadButton.download = 'processed.csv';
+    const downloadLink = document.getElementById('downloadLink');
+    downloadLink.style.display = 'block';
+    downloadLink.href = url;
+    downloadLink.download = 'processed.csv';
 }
 
 function downloadProcessedFile() {
