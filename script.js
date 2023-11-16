@@ -5,18 +5,12 @@ function handleFiles(files) {
     const reader = new FileReader();
 
     reader.onload = function(e) {
-        const arrayBuffer = new Uint8Array(e.target.result);
-        const decodedData = Encoding.convert(arrayBuffer, {
-            to: 'UNICODE', // UTF-8として解釈
-            from: 'SJIS' // Shift-JISとして解釈
-        });
-
-        const content = new TextDecoder('utf-8').decode(decodedData);
+        const content = e.target.result;
         const processedContent = processCsv(content);
         createDownloadLink(processedContent);
     };
 
-    reader.readAsArrayBuffer(file);
+    reader.readAsText(file);
 }
 
 function processCsv(csvContent) {
@@ -33,10 +27,15 @@ function processCsv(csvContent) {
 }
 
 function createDownloadLink(csvContent) {
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
+    const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
-    const downloadLink = document.getElementById('downloadLink');
-    downloadLink.style.display = 'block';
-    downloadLink.href = url;
-    downloadLink.download = 'processed.csv';
+    const downloadButton = document.getElementById('downloadButton');
+    downloadButton.style.display = 'block';
+    downloadButton.href = url;
+    downloadButton.download = 'processed.csv';
+}
+
+function downloadProcessedFile() {
+    const downloadButton = document.getElementById('downloadButton');
+    downloadButton.style.display = 'none';
 }
